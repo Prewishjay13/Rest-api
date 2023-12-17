@@ -8,3 +8,5 @@ router.route('/:id').put(putRoutes).delete(deleteRoutes);
 router.route('/:id').options(optionsRoutes)
 router.route('/:id').get(getPost);
 module.exports = router 
+
+// nieuwe code
