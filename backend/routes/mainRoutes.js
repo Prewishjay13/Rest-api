@@ -144,7 +144,7 @@ router.post('/', async (req, res) => {
     headers['Content-Type'] = 'Content-Type', 'application/json';
     headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
     headers['Allow'] = 'GET, POST, OPTIONS';
-    headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS';
+    headers['Access-Control-Allow-Methods'] = 'GET, POST, HEAD, OPTIONS';
     headers['Content-Length'] = '0';
     headers["Access-Control-Max-Age"] = '86400';
   
@@ -159,7 +159,7 @@ router.post('/', async (req, res) => {
     headers['Content-Type'] = 'Content-Type', 'text/html; charset=UTF-8';
     headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
     headers['Allow'] = 'GET, PUT, DELETE, OPTIONS';
-    headers['Access-Control-Allow-Methods'] = 'GET, PUT, DELETE, OPTIONS';
+    headers['Access-Control-Allow-Methods'] = 'GET, PUT, DELETE, HEAD, OPTIONS';
     headers['Content-Length'] = '0';
     headers["Access-Control-Max-Age"] = '86400';
   
