@@ -27,4 +27,4 @@ let postModel = mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Drink', postModel);
+module.exports = mongoose.model('Post', postModel);

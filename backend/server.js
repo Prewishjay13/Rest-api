@@ -4,7 +4,7 @@ const colors = require('colors')
 const {errorHandler} = require('./middleware/errorMiddleware')
 const connectDB = require('./config/db')
 const port = process.env.PORT || 5000 //to link and use PORT variable in .env file
-let Drink = require('./models/postModel');
+let Post = require('./models/postModel');
 //added
 const bodyParser = require('body-parser')
 
@@ -26,9 +26,9 @@ app.use(function(req,res,next){
 //end
 
 
-drinkRouter = require('./routes/mainRoutes')(Drink);
+postRouter = require('./routes/mainRoutes')(Post);
 
-app.use('/api/drinks', drinkRouter);
+app.use('/posts', postRouter);
 //app.use(errorHandler)
 
 //added

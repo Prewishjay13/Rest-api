@@ -1,21 +1,11 @@
 const express = require('express')
-//const router = express.Router()
-// const {getPosts, getPost, postRoutes, putRoutes, deleteRoutes, optionsRoutes} = require('../controllers/postController') 
-
-// router.route('/').get(getPosts).post(postRoutes);
-
-// router.route('/:id').put(putRoutes).delete(deleteRoutes);
-// router.route('/:id').options(optionsRoutes)
-// router.route('/:id').get(getPost);
-// module.exports = router 
-
 // nieuwe code
 const Pagination = require('../pagination')
 
-let routes = function(Drink){
-    let drinkRouter = express.Router();
+let routes = function(Post){
+    let postRouter = express.Router();
 
-    drinkRouter.route('/')
+    postRouter.route('/')
     .options(function(req, res) {
         res.header('allow', ['OPTIONS, GET, POST'])
         res.header('Access-Control-Allow-Methods', ['OPTIONS,GET,POST'])
@@ -26,18 +16,18 @@ let routes = function(Drink){
             res.sendStatus(400)
         }
         else {
-            let drink = new Drink()
+            let post = new Post()
 
-            drink.name = req.body.name
-            drink.flavor = req.body.flavor
-            drink.color = req.body.color
-            drink.price = req.body.price
+            post.name = req.body.name
+            post.flavor = req.body.flavor
+            post.color = req.body.color
+            post.price = req.body.price
 
-            drink._links.self.href = "http://145.24.222.58:8000/api/drinks/" + drink._id
-            drink._links.collection.href = "http://145.24.222.58:8000/api/drinks"
+            post._links.self.href = "http://145.24.222.132:8000/posts" + post._id
+            post._links.collection.href = "http://145.24.222.132:8000/posts"
             
-            drink.save();
-            res.status(201).send(drink);
+            post.save();
+            res.status(201).send(post);
         }
     })
     .get(async function(req, res) {
@@ -45,49 +35,49 @@ let routes = function(Drink){
         if(req.accepts('json')) {
 
             // TODO: PAGINATION
-            const totalItems = await Drink.countDocuments()
+            const totalItems = await Post.countDocuments()
             let start = ((req.query.start === undefined || parseInt(req.query.start) === 0) ? 0 : parseInt(req.query.start))
             let limit = ((req.query.limit === undefined || parseInt(req.query.limit) === 0) ? 0 : parseInt(req.query.limit))
 
             let currentPage = parseInt(Pagination.currentPage(totalItems, start, limit)) || 1
             let totalPages = parseInt(Pagination.numberOfPages(totalItems, limit)) || 1
 
-            //Drink.find().skip(start).limit
+    
 
-            Drink.find().skip(start).limit(limit).exec(function(error, drinks) {
+            Post.find().skip(start).limit(limit).exec(function(error, posts) {
 
                 if(error) {
                     res.status(500).send(error);
                 }
                 else {
                     res.json({
-                        items: drinks,
+                        items: posts,
                         _links: {
                             self: {
-                                href: 'http://145.24.222.58:8000/api/drinks/'
+                                href: 'http://145.24.222.132:8000/posts'
                             }
                         },
                         pagination: {
                             currentPage: currentPage,
-                            currentItems: drinks.length,
+                            currentItems: posts.length,
                             totalPages: totalPages,
                             totalItems: totalItems,
                             _links: {
                                 first: {
                                     page: 1,
-                                    href: 'http://145.24.222.58:8000/api/drinks/' + Pagination.getFirstQueryString(1, limit)
+                                    href: 'http://145.24.222.132:8000/posts' + Pagination.getFirstQueryString(1, limit)
                                 },
                                 last: {
                                     page: totalPages,
-                                    href: 'http://145.24.222.58:8000/api/drinks/' + Pagination.getLastQueryString(totalItems, limit)
+                                    href: 'http://145.24.222.132:8000/posts' + Pagination.getLastQueryString(totalItems, limit)
                                 },
                                 previous: {
                                     page: (currentPage - 1 === 0 ? currentPage : currentPage - 1),
-                                    href: 'http://145.24.222.58:8000/api/drinks/' + Pagination.getPreviousQueryString(totalItems, start, limit)
+                                    href: 'http://145.24.222.132:8000/posts' + Pagination.getPreviousQueryString(totalItems, start, limit)
                                 },
                                 next: {
                                     page: (currentPage + 1 >= totalPages ? currentPage : currentPage + 1),
-                                    href: 'http://145.24.222.58:8000/api/drinks/' + Pagination.getNextQueryString(totalItems, start, limit)
+                                    href: 'http://145.24.222.132:8000/posts' + Pagination.getNextQueryString(totalItems, start, limit)
                                 }
                             }
                         }
@@ -100,43 +90,43 @@ let routes = function(Drink){
         }
     });
     
-    drinkRouter.use('/:drinkId', function(req, res, next){
-        Drink.findById(req.params.drinkId, function(error, drink){
+    postRouter.use('/:postId', function(req, res, next){
+        Post.findById(req.params.postId, function(error, post){
             if(error)
               res.status(500).send(error);
-            else if (drink){
-              req.drink = drink
+            else if (post){
+              req.post = post
               next();
             }
             else {
-              res.status(404).send('No drink found');
+              res.status(404).send('No post found');
             }
           });
     })
 
-    drinkRouter.route('/:drinkId')
+    postRouter.route('/:postId')
     .options(function(req, res) {
         res.header('allow', ['OPTIONS, GET, PUT, DELETE'])
         res.header('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,DELETE')
         res.sendStatus(200)
     })
     .get(function(req, res){
-        res.json(req.drink)
+        res.json(req.post)
     })
     .put(function(req, res){
         if(!req.body.name || !req.body.flavor || !req.body.color || !req.body.price) {
             res.sendStatus(400)
         }
         else {
-            req.drink.name = req.body.name;
-            req.drink.flavor = req.body.flavor;
-            req.drink.color = req.body.color;
-            req.drink.price = req.body.price;
-            req.drink.save(function(error){
+            req.post.name = req.body.name;
+            req.post.flavor = req.body.flavor;
+            req.post.color = req.body.color;
+            req.post.price = req.body.price;
+            req.post.save(function(error){
                 if(error)
                 res.status(500).send(error);
                 else
-                res.json(req.drink);
+                res.json(req.post);
             });
         }
     })
@@ -145,24 +135,24 @@ let routes = function(Drink){
             delete req.body._id;
         }
         for(let d in req.body){
-            req.drink[d] = req.body[d];
+            req.post[d] = req.body[d];
         }
-        req.drink.save(function(error){
+        req.post.save(function(error){
             if(error)
             res.status(500).send(error);
             else
-            res.json(req.drink);
+            res.json(req.post);
         });
     })
     .delete(function(req, res){
-        req.drink.remove(function(error){
+        req.post.remove(function(error){
             if (error)
             res.status(500).send(error);
             else
             res.status(204).send('removed');
         });
     });
-    return drinkRouter;
+    return postRouter;
 };
 
 module.exports = routes
