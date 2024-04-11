@@ -159,7 +159,7 @@ router.post('/', async (req, res) => {
     headers['Content-Type'] = 'Content-Type', 'text/html; charset=UTF-8';
     headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
     headers['Allow'] = 'GET, PUT, DELETE, PATCH, OPTIONS';
-    headers['Access-Control-Allow-Methods'] = 'GET, PUT, DELETE, Patch, OPTIONS';
+    headers['Access-Control-Allow-Methods'] = 'GET, PUT, DELETE, PATCH, OPTIONS';
     headers['Content-Length'] = '0';
     headers["Access-Control-Max-Age"] = '86400';
   
