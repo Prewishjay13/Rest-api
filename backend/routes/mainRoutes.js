@@ -137,16 +137,24 @@ router.post('/', async (req, res) => {
   })
 
 
-  router.options('/', async (req, res) => {
-    let headers = [];
+  router.options('/', async (req, res, next) => {
+    //let headers = [];
   
-    headers['Access-Control-Allow-Origin'] = '*';
-    headers['Content-Type'] = 'Content-Type', 'application/json';
-    headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
-    headers['Allow'] = 'GET, HEAD, POST, OPTIONS';
-    headers['Access-Control-Allow-Methods'] = 'GET, POST, HEAD, OPTIONS';
-    headers['Content-Length'] = '0';
-    headers["Access-Control-Max-Age"] = '86400';
+    // headers['Access-Control-Allow-Origin'] = '*';
+    // headers['Content-Type'] = 'Content-Type', 'application/json';
+    // headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
+    // headers['Allow'] = 'GET, HEAD, POST, OPTIONS';
+    // headers['Access-Control-Allow-Methods'] = 'GET, POST, HEAD, OPTIONS';
+    // headers['Content-Length'] = '0';
+    // headers["Access-Control-Max-Age"] = '86400';
+
+    res.header('Access-Control-Allow-Origin', 'http://www.jgdeveloper.nl');
+    res.header('Allow', 'GET,POST,OPTIONS');
+    res.header('Access-Control-Request-Headers', 'Content-Type, Accept, Authorization, Content-Length, X-Requested-With');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Accept')
+    res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS')
+    res.set('Accept', 'application/json')
+    res.set('Content-Type', 'application/json')
   
     res.writeHead(200, headers);
     res.send();
@@ -154,14 +162,21 @@ router.post('/', async (req, res) => {
   
   // Retrieve options for posts detail resource
   router.options('/:id', function (req, res) {
-    let headers = [];
-    headers['Access-Control-Allow-Origin'] = '*';
-    headers['Content-Type'] = 'Content-Type', 'text/html; charset=UTF-8';
-    headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
-    headers['Allow'] = 'GET, PUT, DELETE, PATCH, OPTIONS';
-    headers['Access-Control-Allow-Methods'] = 'GET, PUT, DELETE, PATCH, OPTIONS';
-    headers['Content-Length'] = '0';
-    headers["Access-Control-Max-Age"] = '86400';
+    //let headers = [];
+    // headers['Access-Control-Allow-Origin'] = '*';
+    // headers['Content-Type'] = 'Content-Type', 'text/html; charset=UTF-8';
+    // headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
+    // headers['Allow'] = 'GET, PUT, DELETE, PATCH, OPTIONS';
+    // headers['Access-Control-Allow-Methods'] = 'GET, PUT, DELETE, PATCH, OPTIONS';
+    // headers['Content-Length'] = '0';
+    // headers["Access-Control-Max-Age"] = '86400';
+
+    res.header('Access-Control-Allow-Origin', 'http://jgdeveloper.nl')
+    res.header('Allow', 'GET,PUT,PATCH,DELETE,OPTIONS')     
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, Content-Length, X-Requested-With')
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,PATCH,DELETE,OPTIONS')
+    res.set({'Content-Type': 'applicationo/x-www-form-urlencoded'})
+    res.set({'Accept': 'application/json'})
   
     res.writeHead(200, headers);
     res.send();
