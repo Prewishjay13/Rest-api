@@ -2,16 +2,20 @@ const mongoose = require('mongoose');
 
 let postModel = mongoose.Schema({
     name: {
-        type: String
+        type: String,
+        required:true
     },
     flavor: {
-        type: String
+        type: String,
+        required:true
     },
     color: {
-        type: String
+        type: String,
+        required:true
     },
     price: {
-        type: String
+        type: String,
+        required:true
     },
     _links: {
         items: [{
