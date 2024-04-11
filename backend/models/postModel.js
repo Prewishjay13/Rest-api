@@ -19,9 +19,13 @@ const postSchema = new mongoose.Schema({
             href:{
                 type: String
             }
-        }, collection: {href: {type: String}}
-    }, 
-});
+        },
+        collection: {
+            href: {
+                type: String
+            }
+        }}
+    });
 
 // Set virtuals for toObject and toJSON
 //postSchema.set('toObject', { virtuals: true });
