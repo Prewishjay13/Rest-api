@@ -1,30 +1,33 @@
 const mongoose = require('mongoose');
 
 let postModel = mongoose.Schema({
-    name:{
+    name: {
         type: String
     },
-    flavor:{
+    flavor: {
         type: String
     },
-    color:{
+    color: {
         type: String
     },
-    price:{
+    price: {
         type: String
     },
-    _links:{
-        self:{
-            href:{
-                type: String
+    _links: {
+        items: [{
+            _links: {
+                self: {
+                    type: String
+                },
+                collection: {
+                    type: String
+                }
             }
-        },
+        }],
         collection: {
-            href: {
-                type: String
-            }
+            type: String
         }
     }
-});
+}, { collection: "items" });
 
 module.exports = mongoose.model('Post', postModel);
