@@ -148,7 +148,7 @@ router.post('/', async (req, res) => {
     // headers['Content-Length'] = '0';
     // headers["Access-Control-Max-Age"] = '86400';
 
-    res.header('Access-Control-Allow-Origin', 'http://www.jgdeveloper.nl');
+    res.header('Access-Control-Allow-Origin', '*');
     res.header('Allow', 'GET,POST,OPTIONS');
     res.header('Access-Control-Request-Headers', 'Content-Type, Accept, Authorization, Content-Length, X-Requested-With');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Accept')
@@ -156,12 +156,13 @@ router.post('/', async (req, res) => {
     res.set('Accept', 'application/json')
     res.set('Content-Type', 'application/json')
   
-    res.writeHead(200, headers);
+   // res.writeHead(200, headers);
+    res.sendStatus(200)
     res.send();
   });
   
   // Retrieve options for posts detail resource
-  router.options('/:id', function (req, res) {
+  router.options('/:id', function (req, res, next) {
     //let headers = [];
     // headers['Access-Control-Allow-Origin'] = '*';
     // headers['Content-Type'] = 'Content-Type', 'text/html; charset=UTF-8';
@@ -171,14 +172,15 @@ router.post('/', async (req, res) => {
     // headers['Content-Length'] = '0';
     // headers["Access-Control-Max-Age"] = '86400';
 
-    res.header('Access-Control-Allow-Origin', 'http://jgdeveloper.nl')
+    res.header('Access-Control-Allow-Origin', '*')
     res.header('Allow', 'GET,PUT,PATCH,DELETE,OPTIONS')     
     res.header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, Content-Length, X-Requested-With')
     res.header('Access-Control-Allow-Methods', 'GET,PUT,PATCH,DELETE,OPTIONS')
     res.set({'Content-Type': 'applicationo/x-www-form-urlencoded'})
     res.set({'Accept': 'application/json'})
   
-    res.writeHead(200, headers);
+    //res.writeHead(200, headers);
+    res.sendStatus(200)
     res.send();
   })
   
