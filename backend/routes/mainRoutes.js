@@ -29,7 +29,7 @@ const router = express.Router()
             },
             pagination: {
                 currentPage: page,
-                currentItems: items.length,
+                currentItems: posts.length,
                 totalPages: totalPages,
                 totalItems: totalItems,
                 _links: {
