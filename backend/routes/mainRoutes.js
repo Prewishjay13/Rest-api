@@ -95,9 +95,9 @@ async function getPost(req, res, next) {
 // Creating one
 router.post('/', async (req, res) => {
     const post = new Post({
-      name: req.body.name,
-      clothingType: req.body.clothingType,
-      creator: req.body.creator
+      title: req.body.name,
+      text: req.body.clothingType,
+      address: req.body.creator
     })
     try {
       const newPost = await post.save()
@@ -109,14 +109,14 @@ router.post('/', async (req, res) => {
 
 
   router.put('/:id', getPost, async (req, res) => {
-    if (req.body.name != null) {
-      res.post.name = req.body.name
+    if (req.body.title != null) {
+      res.post.title = req.body.title
     }
-    if (req.body.clothingType != null) {
-      res.post.clothingType = req.body.clothingType
+    if (req.body.text != null) {
+      res.post.text = req.body.text
     }
-    if (req.body.creator != null) {
-      res.post.creator = req.body.creator
+    if (req.body.address != null) {
+      res.post.address = req.body.address
     }
     try {
       const updatedPost = await res.post.save()
