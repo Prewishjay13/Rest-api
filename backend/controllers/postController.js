@@ -41,7 +41,8 @@ const getPosts = asyncHandler(async (req, res) => {
                 _links: {
                     first: {
                         page: 1,
-                        href: req.protocol + '://' + req.get('host') + req.baseUrl + req.path + Pagination.getFirstQueryString(1, limit)
+                        href: "http://145.24.222.132:8000/posts" + Pagination.getFirstQueryString(1, limit)
+                        //href: req.protocol + '://' + req.get('host') + req.baseUrl + req.path + Pagination.getFirstQueryString(1, limit)
                     },
                     last: {
                         page: totalPages,
@@ -112,12 +113,12 @@ const putRoutes = asyncHandler(async (req, res) => {
 const optionsRoutes = function (req, res) {
     let headers = {};
     headers['Allow'] = 'GET, POST, OPTIONS';
-    headers['Access-Control-Allow-Origin'] = '*';
-    headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
+    //headers['Access-Control-Allow-Origin'] = '*';
+    //headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
     headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS';
-    headers['Content-Length'] = 0;
-    headers['Content-Type'] = 'text/html';
-    headers["Access-Control-Max-Age"] = '86400';
+    //headers['Content-Length'] = 0;
+    //headers['Content-Type'] = 'text/html';
+    //headers["Access-Control-Max-Age"] = '86400';
     res.writeHead(200, headers);
     res.send();
 };
