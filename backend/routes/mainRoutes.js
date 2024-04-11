@@ -11,84 +11,80 @@ let routes = function(Post){
         res.header('Access-Control-Allow-Methods', ['OPTIONS,GET,POST'])
         res.sendStatus(200)
     })
-    .post(function(req, res){
+    .post(async function(req, res){
         if(!req.body.name || !req.body.flavor || !req.body.color || !req.body.price) {
             res.sendStatus(400)
         }
         else {
             let post = new Post()
-
+    
             post.name = req.body.name
             post.flavor = req.body.flavor
             post.color = req.body.color
             post.price = req.body.price
-
+    
             post._links.self.href = "http://145.24.222.132:8000/posts" + post._id
             post._links.collection.href = "http://145.24.222.132:8000/posts"
             
-            post.save();
-            res.status(201).send(post);
+            try {
+                await post.save();
+                res.status(201).send(post);
+            } catch (error) {
+                res.status(500).send(error);
+            }
         }
     })
     .get(async function(req, res) {
-
         if(req.accepts('json')) {
-
-            // TODO: PAGINATION
-            const totalItems = await Post.countDocuments()
-            let start = ((req.query.start === undefined || parseInt(req.query.start) === 0) ? 0 : parseInt(req.query.start))
-            let limit = ((req.query.limit === undefined || parseInt(req.query.limit) === 0) ? 0 : parseInt(req.query.limit))
-
-            let currentPage = parseInt(Pagination.currentPage(totalItems, start, limit)) || 1
-            let totalPages = parseInt(Pagination.numberOfPages(totalItems, limit)) || 1
-
-    
-
-            Post.find().skip(start).limit(limit).exec(function(error, posts) {
-
-                if(error) {
-                    res.status(500).send(error);
-                }
-                else {
-                    res.json({
-                        items: posts,
+            try {
+                const totalItems = await Post.countDocuments();
+                let start = ((req.query.start === undefined || parseInt(req.query.start) === 0) ? 0 : parseInt(req.query.start))
+                let limit = ((req.query.limit === undefined || parseInt(req.query.limit) === 0) ? 0 : parseInt(req.query.limit))
+        
+                let currentPage = parseInt(Pagination.currentPage(totalItems, start, limit)) || 1
+                let totalPages = parseInt(Pagination.numberOfPages(totalItems, limit)) || 1
+        
+                const posts = await Post.find().skip(start).limit(limit);
+        
+                res.json({
+                    items: posts,
+                    _links: {
+                        self: {
+                            href: 'http://145.24.222.132:8000/posts'
+                        }
+                    },
+                    pagination: {
+                        currentPage: currentPage,
+                        currentItems: posts.length,
+                        totalPages: totalPages,
+                        totalItems: totalItems,
                         _links: {
-                            self: {
-                                href: 'http://145.24.222.132:8000/posts'
-                            }
-                        },
-                        pagination: {
-                            currentPage: currentPage,
-                            currentItems: posts.length,
-                            totalPages: totalPages,
-                            totalItems: totalItems,
-                            _links: {
-                                first: {
-                                    page: 1,
-                                    href: 'http://145.24.222.132:8000/posts' + Pagination.getFirstQueryString(1, limit)
-                                },
-                                last: {
-                                    page: totalPages,
-                                    href: 'http://145.24.222.132:8000/posts' + Pagination.getLastQueryString(totalItems, limit)
-                                },
-                                previous: {
-                                    page: (currentPage - 1 === 0 ? currentPage : currentPage - 1),
-                                    href: 'http://145.24.222.132:8000/posts' + Pagination.getPreviousQueryString(totalItems, start, limit)
-                                },
-                                next: {
-                                    page: (currentPage + 1 >= totalPages ? currentPage : currentPage + 1),
-                                    href: 'http://145.24.222.132:8000/posts' + Pagination.getNextQueryString(totalItems, start, limit)
-                                }
+                            first: {
+                                page: 1,
+                                href: 'http://145.24.222.132:8000/posts' + Pagination.getFirstQueryString(1, limit)
+                            },
+                            last: {
+                                page: totalPages,
+                                href: 'http://145.24.222.132:8000/posts' + Pagination.getLastQueryString(totalItems, limit)
+                            },
+                            previous: {
+                                page: (currentPage - 1 === 0 ? currentPage : currentPage - 1),
+                                href: 'http://145.24.222.132:8000/posts' + Pagination.getPreviousQueryString(totalItems, start, limit)
+                            },
+                            next: {
+                                page: (currentPage + 1 >= totalPages ? currentPage : currentPage + 1),
+                                href: 'http://145.24.222.132:8000/posts' + Pagination.getNextQueryString(totalItems, start, limit)
                             }
                         }
-                    })
-                }
-            });
+                    }
+                });
+            } catch (error) {
+                res.status(500).send(error);
+            }
+        } else {
+            res.sendStatus(400);
         }
-        else {
-            res.sendStatus(400)
-        }
-    });
+    })
     
     postRouter.use('/:postId', function(req, res, next){
         Post.findById(req.params.postId, function(error, post){
