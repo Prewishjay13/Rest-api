@@ -1,32 +1,36 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
+// Define the schema for the post
+const postSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: [true, 'Insert text value']
+    },
+    text: {
+        type: String,
+        required: [true, 'Insert text']
+    },
+    address: {
+        type: String,
+        required: [true, 'Insert address']
+    }
+});
 
-//this is how u make a schema/table
-const postSchema = mongoose.Schema({
-    title:{
-        type: String,
-        required: [true, 'Insert text value']},
-    text:{
-        type: String,
-        required: [true, 'insert text']
-    },
-    adress:{
-        type: String,
-        required: [true, 'Insert adress']
-    },
-    zipcode:{
-        type: String,
-        required: [true, 'Insert zipcode']
-    },
-    cost:{
-        type: String,
-        required: [true, 'Insert zipcode']
-    },
-},
-{
-    timestamps: true, 
-})
+// Set virtuals for toObject and toJSON
+postSchema.set('toObject', { virtuals: true });
+postSchema.set('toJSON', { virtuals: true });
 
-//exporting a model looks a bit different
-//the model needs to be imported in the controller
-module.exports = mongoose.model('Post', postSchema)
+// Add virtual properties to the model instance.
+postSchema.virtual('_links').get(function () {
+    return {
+        "self": {
+            "href": 'http://145.24.222.132:8000/posts' + this._id,
+        },
+        "collection": {
+            "href": 'http://145.24.222.132:8000/posts'
+        }
+    };
+});
+
+// Export the model
+module.exports = mongoose.model('Post', postSchema);

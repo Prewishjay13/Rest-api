@@ -1,147 +1,168 @@
-const asyncHandler = require('express-async-handler');
-const Post = require('../models/postModel');
-const Pagination = require('../pagination');
+// const asyncHandler = require('express-async-handler');
+// const Post = require('../models/postModel');
+// ///const Pagination = require('../pagination');
 
-const getPosts = asyncHandler(async (req, res) => {
-    //res.header('Allow', 'GET, POST, OPTIONS');
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    //res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+//     router.get('/', async (req, res) => {
 
-    try {
-        const start = (req.query.start === undefined || parseInt(req.query.start) === 0) ? 0 : parseInt(req.query.start);
-        const limit = (req.query.limit === undefined || parseInt(req.query.limit) === 0) ? 0 : parseInt(req.query.limit);
+//         let page = Math.round(req.query.start || 1);
+//         const totalItems = await Post.estimatedDocumentCount().exec();
+//         const itemsPerPage = + parseInt(req.query.limit) || totalItems;
+//         const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-        const totalItems = await Post.countDocuments();
-        const currentPage = parseInt(Pagination.currentPage(totalItems, start, limit)) || 1;
-        const totalPages = parseInt(Pagination.numberOfPages(totalItems, limit)) || 1;
+//         try {
+//             const totalItems = await Post.estimatedDocumentCount().exec();
+      
+//             res.set('Access-Control-Allow-Origin', '*');
+//             res.set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
 
-        const posts = await Post.find();
-        let items = [];
-        for (let i = 0; i < posts.length; i++) {
-            let post = posts[i].toJSON();
-            post._links = {
-                self: { href: "http://" + req.headers.host + "/posts/" + post._id },
-                collection: { href: "http://" + req.headers.host + "/posts" }
-            };
-            items.push(post);
-        }
-        let collection = {
-            items: items,
-            _links: {
-                self: {
-                    href: "http://" + req.headers.host + "/posts"
-                }
-            },
-            pagination: {
-                currentPage: currentPage,
-                currentItems: items.length,
-                totalPages: totalPages,
-                totalItems: totalItems,
-                _links: {
-                    first: {
-                        page: 1,
-                        href: "http://145.24.222.132:8000/posts" + Pagination.getFirstQueryString(1, limit)
-                        //href: req.protocol + '://' + req.get('host') + req.baseUrl + req.path + Pagination.getFirstQueryString(1, limit)
-                    },
-                    last: {
-                        page: totalPages,
-                        href: req.protocol + '://' + req.get('host') + req.baseUrl + req.path + Pagination.getLastQueryString(totalItems, limit)
-                    },
-                    previous: {
-                        page: (currentPage - 1 === 0 ? currentPage : currentPage - 1),
-                        href: req.protocol + '://' + req.get('host') + req.baseUrl + req.path + Pagination.getPreviousQueryString(totalItems, start, limit)
-                    },
-                    next: {
-                        page: (currentPage + 1 >= totalPages ? currentPage : currentPage + 1),
-                        href: req.protocol + '://' + req.get('host') + req.baseUrl + req.path + Pagination.getNextQueryString(totalItems, start, limit)
-                    }
-                }
-            }
-        };
-        res.status(200).json(collection);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
+//         const posts = await Post.find()
+//         .limit(parseInt(req.query.limit))
+//         .skip(parseInt(req.query.start))
+//         res.json({
+//             "items": posts, 
+//             "_links": {
+//                 "self": {
+//                     "href": 'http://145.24.222.132:8000/posts/'
+//                 }
+//             },
+//             pagination: {
+//                 currentPage: page,
+//                 currentItems: items.length,
+//                 totalPages: totalPages,
+//                 totalItems: totalItems,
+//                 _links: {
+//                     first: {
+//                         //page: 1,
+//                         page:"http://145.24.222.132:8000/posts",
+//                         href: `http://145.24.222.132:8000/posts/?start=1&limit=${itemsPerPage}`
+//                         //href: req.protocol + '://' + req.get('host') + req.baseUrl + req.path + Pagination.getFirstQueryString(1, limit)
+//                     },
+//                     last: {
+//                         //page: totalPages,
+//                         page:"http://145.24.222.132:8000/posts",
+//                         href: `http://145.24.222.132:8000/posts/?start=${totalPages}&limit=${itemsPerPage}`
+//                         //href: req.protocol + '://' + req.get('host') + req.baseUrl + req.path + Pagination.getLastQueryString(totalItems, limit)
+//                     },
+//                     previous: {
+//                         //page: (currentPage - 1 === 0 ? currentPage : currentPage - 1),
+//                         page:"http://145.24.222.132:8000/posts",
+//                         href: `http://145.24.222.132:8000/posts/?start=${page == 1 ? 1 : page - 1}&limit=${itemsPerPage}`
+//                         //href: req.protocol + '://' + req.get('host') + req.baseUrl + req.path + Pagination.getPreviousQueryString(totalItems, start, limit)
+//                     },
+//                     next: {
+//                         //page: (currentPage + 1 >= totalPages ? currentPage : currentPage + 1),
+//                         page:"http://145.24.222.132:8000/posts",
+//                         href: `http://145.24.222.132:8000/posts/?start=${page == 1 ? 1 : page + 1}&limit=${itemsPerPage}`
+//                         //href: req.protocol + '://' + req.get('host') + req.baseUrl + req.path + Pagination.getNextQueryString(totalItems, start, limit)
+//                     }
+//                 }
+//             }
+//         });
+//     } catch (err) {
+//         res.status(500).json({ message: err.message });
+//     }
+// });
 
-// GET single post
-const getPost = asyncHandler(async (req, res) => {
-    const post = await Post.findById(req.params.id);
-    res.status(200).json(post);
-});
+// // // GET single post
+// // const getPost = asyncHandler(async (req, res) => {
+// //     const post = await Post.findById(req.params.id);
+// //     res.status(200).json(post);
+// // });
 
-// POST routes
-const postRoutes = asyncHandler(async (req, res) => {
-    console.log(req.body);
+// async function getPost(req, res, next) {
+//     let post
+//     try {
+//       post = await Post.findById(req.params.id)
+//       if (post == null) {
+//         return res.status(404).json({ message: 'Cannot find post' })
+//       }
+//     } catch (err) {
+//       return res.status(500).json({ message: err.message })
+//     }
+  
+//     res.post = post
+//     next()
+//   }
+  
+//   router.get('/:id', getPost, (req, res) => {
+//     res.set('Access-Control-Allow-Origin', '*');
+//     res.set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+//     res.json(res.post)
+//   })
 
-    // to get body data add the following line:
-    // console.log(req.body);
-    // error code handle
-    if (!req.body.title || !req.body.text || !req.body.adress || !req.body.zipcode || !req.body.cost) {
-        // res.status(400).json({message:'add text!'}) //rewriting this to use express error handling
-        res.status(400);
-        throw new Error('Please fill in all fields');
-    }
-    const post = await Post.create({
-        title: req.body.title,
-        text: req.body.text,
-        adress: req.body.adress,
-        zipcode: req.body.zipcode,
-        cost: req.body.cost
-    });
-    // res.status(200).json({message: 'this is the post controller talking'})
+// // Creating one
+// router.post('/', async (req, res) => {
+//     const post = new Post({
+//       name: req.body.name,
+//       clothingType: req.body.clothingType,
+//       creator: req.body.creator
+//     })
+//     try {
+//       const newPost = await post.save()
+//       res.status(201).json(newPost)
+//     } catch (err) {
+//       res.status(400).json({ message: err.message })
+//     }
+//   })
 
-    res.status(200).json(post);
-});
 
-// PUT routes
-const putRoutes = asyncHandler(async (req, res) => {
-    const post = await Post.findById(req.params.id);
-    if (!post) {
-        res.status(400);
-        throw new Error('Post not found');
-    }
-    const updatedPost = await Post.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-    });
-    // res.status(200).json({message: `update route for post number ${req.params.id}`})
-    res.status(200).json(updatedPost);
-});
+//   router.put('/:id', getPost, async (req, res) => {
+//     if (req.body.name != null) {
+//       res.post.name = req.body.name
+//     }
+//     if (req.body.clothingType != null) {
+//       res.post.clothingType = req.body.clothingType
+//     }
+//     if (req.body.creator != null) {
+//       res.post.creator = req.body.creator
+//     }
+//     try {
+//       const updatedPost = await res.post.save()
+//       res.json(updatedPost)
+//     } catch (err) {
+//       res.status(400).json({ message: err.message })
+//     }
+//   })
+  
+//   // Deleting One
+//   router.delete('/:id', getPost, async (req, res) => {
+//     try {
+//       await res.post.remove()
+//       res.status(204).json({ message: 'Deleted post' })
+//     } catch (err) {
+//       res.status(500).json({ message: err.message })
+//     }
+//   })
 
-// OPTIONS
-const optionsRoutes = function (req, res) {
-    let headers = {};
-    headers['Allow'] = 'GET, POST, OPTIONS';
-    //headers['Access-Control-Allow-Origin'] = '*';
-    //headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
-    headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS';
-    //headers['Content-Length'] = 0;
-    //headers['Content-Type'] = 'text/html';
-    //headers["Access-Control-Max-Age"] = '86400';
-    res.writeHead(200, headers);
-    res.send();
-};
 
-// DELETE routes
-const deleteRoutes = asyncHandler(async (req, res) => {
-    const post = await Post.findById(req.params.id);
-    if (!post) {
-        res.status(400);
-        throw new Error('Post not found for deleting');
-    }
-    // .deleteOne instead of remove
-    await post.deleteOne();
-    // res.status(200).json({message: `delete route for post number ${req.params.id}`})
-    res.status(200).json({id: req.params.id})
-});
-
-// This next line exports the functions so that it can be required(imported) in other files for use
-module.exports = {
-    getPosts,
-    getPost,
-    postRoutes,
-    putRoutes,
-    deleteRoutes,
-    optionsRoutes
-};
+//   router.options('/', async (req, res) => {
+//     let headers = [];
+  
+//     headers['Access-Control-Allow-Origin'] = '*';
+//     headers['Content-Type'] = 'Content-Type', 'application/json';
+//     headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
+//     headers['Allow'] = 'GET, POST, OPTIONS';
+//     headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS';
+//     headers['Content-Length'] = '0';
+//     headers["Access-Control-Max-Age"] = '86400';
+  
+//     res.writeHead(200, headers);
+//     res.send();
+//   });
+  
+//   // Retrieve options for posts detail resource
+//   router.options('/:id', function (req, res) {
+//     let headers = [];
+//     headers['Access-Control-Allow-Origin'] = '*';
+//     headers['Content-Type'] = 'Content-Type', 'text/html; charset=UTF-8';
+//     headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
+//     headers['Allow'] = 'GET, PUT, DELETE, OPTIONS';
+//     headers['Access-Control-Allow-Methods'] = 'GET, PUT, DELETE, OPTIONS';
+//     headers['Content-Length'] = '0';
+//     headers["Access-Control-Max-Age"] = '86400';
+  
+//     res.writeHead(200, headers);
+//     res.send();
+//   })
+  
+//   module.exports = router  
