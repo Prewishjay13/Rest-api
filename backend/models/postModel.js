@@ -1,32 +1,30 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
+let postModel = mongoose.Schema({
+    name:{
+        type: String
+    },
+    flavor:{
+        type: String
+    },
+    color:{
+        type: String
+    },
+    price:{
+        type: String
+    },
+    _links:{
+        self:{
+            href:{
+                type: String
+            }
+        },
+        collection: {
+            href: {
+                type: String
+            }
+        }
+    }
+});
 
-//this is how u make a schema/table
-const postSchema = mongoose.Schema({
-    title:{
-        type: String,
-        required: [true, 'Insert text value']},
-    text:{
-        type: String,
-        required: [true, 'insert text']
-    },
-    adress:{
-        type: String,
-        required: [true, 'Insert adress']
-    },
-    zipcode:{
-        type: String,
-        required: [true, 'Insert zipcode']
-    },
-    cost:{
-        type: String,
-        required: [true, 'Insert zipcode']
-    },
-},
-{
-    timestamps: true, 
-})
-
-//exporting a model looks a bit different
-//the model needs to be imported in the controller
-module.exports = mongoose.model('Post', postSchema)
+module.exports = mongoose.model('Drink', postModel);
