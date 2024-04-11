@@ -4,15 +4,15 @@ const mongoose = require('mongoose');
 const postSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: [true, 'Insert text value']
+        //required: [true, 'Insert text value']
     },
     text: {
         type: String,
-        required: [true, 'Insert text']
+        //required: [true, 'Insert text']
     },
     address: {
         type: String,
-        required: [true, 'Insert address']
+        //required: [true, 'Insert address']
     },
     _links:{
         self:{
