@@ -94,7 +94,10 @@ async function getPost(req, res, next) {
 
 // Creating one
 router.post('/',  (req, res) => {
-    const post = new Post(req.body)
+    const post = new Post({title: req.body.title,
+        text: req.body.text,
+        address: req.body.address})
+  
 
     post._links.self.href = "http://145.24.222.132:8000/posts" + post._id
         post._links.collection.href = "http://145.24.222.132:8000/posts"
