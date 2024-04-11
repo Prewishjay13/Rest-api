@@ -24,7 +24,7 @@ const postSchema = new mongoose.Schema({
 });
 
 // Set virtuals for toObject and toJSON
-postSchema.set('toObject', { virtuals: true });
+//postSchema.set('toObject', { virtuals: true });
 postSchema.set('toJSON', { virtuals: true });
 
 // Add virtual properties to the model instance.
