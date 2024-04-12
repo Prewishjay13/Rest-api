@@ -79,7 +79,7 @@ async function getPost(req, res, next) {
     let post
     try {
       post = await Post.findById(req.params.id)
-      if (post == null) {
+      if (!post) {
         return res.status(404).json({ message: 'Cannot find post' })
       } 
       res.post = post
@@ -88,6 +88,8 @@ async function getPost(req, res, next) {
       return res.status(500).json({ message: err.message })
     }
   
+    // res.post = post
+    // next()
   }
   
   router.get('/:id', getPost, (req, res) => {
