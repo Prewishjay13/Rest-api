@@ -79,9 +79,11 @@ async function getPost(req, res, next) {
     let post
     try {
       post = await Post.findById(req.params.id)
-      if (post == null) {
+      if (!post) {
         return res.status(404).json({ message: 'Cannot find post' })
-      }
+      }  
+      res.post = post; // Attach the post object to the response
+      next();
     } catch (err) {
       return res.status(500).json({ message: err.message })
     }
@@ -144,7 +146,7 @@ router.post('/', async (req, res) => {
   router.delete('/:id', getPost, async (req, res) => {
     try {
       await res.post.remove()
-      res.status(200).json({ message: 'Deleted post' })
+      res.status(204).json({ message: 'Deleted post' })
     } catch (err) {
       res.status(500).json({ message: err.message })
     }
