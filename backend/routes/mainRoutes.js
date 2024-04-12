@@ -17,7 +17,7 @@ const router = express.Router()
             .skip((page - 1) * itemsPerPage);
             //const totalItems = await Post.estimatedDocumentCount().exec();
             const totalPages = Math.ceil(totalItems / itemsPerPage);
-            
+
             res.set('Access-Control-Allow-Origin', '*');
             res.set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
 
@@ -157,9 +157,9 @@ router.post('/', async (req, res) => {
     res.header('Access-Control-Request-Headers', 'Content-Type, Accept, Authorization, Content-Length, X-Requested-With');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Accept')
     res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS')
-    //res.set('Accept', 'application/json')
-    res.set('Content-Type', 'application/json')
-  
+    res.set('Accept', 'application/json')
+    res.set({'Content-Type': 'applicationo/x-www-form-urlencoded'})
+    //res.set('Content-Type', 'application/json')
    // res.writeHead(200, headers);
     res.sendStatus(200)
     res.send();
@@ -172,8 +172,7 @@ router.post('/', async (req, res) => {
     res.header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, Content-Length, X-Requested-With')
     res.header('Access-Control-Allow-Methods', 'GET,PUT,PATCH,DELETE,OPTIONS')
     res.set({'Content-Type': 'applicationo/x-www-form-urlencoded'})
-    //res.set({'Accept': 'application/json'})
-  
+    res.set({'Accept': 'application/json'})
     //res.writeHead(200, headers);
     res.sendStatus(200)
     res.send();
