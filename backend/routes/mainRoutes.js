@@ -96,6 +96,7 @@ async function getPost(req, res, next) {
 router.post('/', async (req, res) => {
   const post = new Post({title: req.body.title,
       text: req.body.text,
+      city: req.body.city,
       address: req.body.address,
     zipcode: req.body.zipcode})
 
@@ -116,6 +117,9 @@ router.post('/', async (req, res) => {
     }
     if (req.body.text != null) {
       res.post.text = req.body.text
+    }
+    if (req.body.city != null) {
+      res.post.city = req.body.city
     }
     if (req.body.address != null) {
       res.post.address = req.body.address
