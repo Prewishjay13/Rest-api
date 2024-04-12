@@ -147,7 +147,7 @@ router.post('/', async (req, res) => {
   // Deleting One
   router.delete('/:id', getPost, async (req, res) => {
     try {
-      await req.post.remove()
+      await res.post.remove({})
       //await res.locals.post.remove();
       res.status(204).json({ message: 'Deleted post' })
     } catch (err) {
