@@ -82,6 +82,7 @@ async function getPost(req, res, next) {
       if (!post) {
         return res.status(404).json({ message: 'Cannot find post' })
       } 
+      await res.locals.post.remove();
       res.post = post
       next()
     } catch (err) {
