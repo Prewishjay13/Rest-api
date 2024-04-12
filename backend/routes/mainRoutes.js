@@ -93,22 +93,30 @@ async function getPost(req, res, next) {
   })
 
 // Creating one
-router.post('/',  (req, res) => {
-    const post = new Post({title: req.body.title,
-        text: req.body.text,
-        address: req.body.address})
-  
+router.post('/', (req, res) => {
+  const post = new Post({
+      title: req.body.title,
+      text: req.body.text,
+      address: req.body.address
+  });
 
-    post._links.self.href = "http://145.24.222.132:8000/posts" + post._id
-        post._links.collection.href = "http://145.24.222.132:8000/posts"
+  post._links = {
+      self: {
+          href: "http://145.24.222.132:8000/posts" + post._id
+      },
+      collection: {
+          href: "http://145.24.222.132:8000/posts"
+      }
+  };
 
-    try {
-      const newPost = post.save()
-      res.status(201).json(newPost)
-    } catch (err) {
-      res.status(400).json({ message: err.message })
-    }
-  })
+  post.save((err) => {
+      if (err) {
+          res.status(500).send(err);
+      } else {
+          res.status(201).send(post);
+      }
+  });
+});
 
 
   router.put('/:id', getPost, async (req, res) => {
