@@ -1,2 +1,6 @@
-{"uri":  "http://145.24.222.132:8000/posts",
-"description": "een api voor posts." }
+
+{
+    "uri": "stud.hosted.hr.nl/0935796/webservice.json",
+    "description": "Voor beoordeling",
+    "test": "{title:nrrj, text:mkmkm, address:mkm, zipcode: 1234}"
+}

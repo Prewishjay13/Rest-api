@@ -9,17 +9,20 @@ const router = express.Router()
         let page = Math.round(req.query.start || 1);
         const totalItems = await Post.estimatedDocumentCount().exec();
         const itemsPerPage = + parseInt(req.query.limit) || totalItems;
-        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        //const totalPages = Math.ceil(totalItems / itemsPerPage);
 
         try {
-            const totalItems = await Post.estimatedDocumentCount().exec();
-      
+          const posts = await Post.find()
+            .limit(itemsPerPage)
+            .skip((page - 1) * itemsPerPage);
+            //const totalItems = await Post.estimatedDocumentCount().exec();
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
             res.set('Access-Control-Allow-Origin', '*');
             res.set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
 
-        const posts = await Post.find()
-        .limit(parseInt(req.query.limit))
-        .skip(parseInt(req.query.start))
+        // const posts = await Post.find()
+        // .limit(parseInt(req.query.limit))
+        // .skip(parseInt(req.query.start))
         res.json({
             "items": posts, 
             "_links": {
