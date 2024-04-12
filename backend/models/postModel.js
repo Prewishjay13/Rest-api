@@ -14,6 +14,9 @@ const postSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    zipcode:{
+        type: String, required: true
+    },
     _links:{
         self:{
             href:{

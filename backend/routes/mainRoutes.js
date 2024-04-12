@@ -96,7 +96,8 @@ async function getPost(req, res, next) {
 router.post('/', async (req, res) => {
   const post = new Post({title: req.body.title,
       text: req.body.text,
-      address: req.body.address})
+      address: req.body.address,
+    zipcode: req.body.zipcode})
 
       post._links.self.href = "http://145.24.222.132:8000/posts/" + post._id.toString();
   post._links.collection.href = "http://145.24.222.132:8000/posts"
@@ -118,6 +119,9 @@ router.post('/', async (req, res) => {
     }
     if (req.body.address != null) {
       res.post.address = req.body.address
+    }
+    if (req.body.zipcode != null) {
+      res.post.zipcode = req.body.zipcode
     }
     try {
       const updatedPost = await res.post.save()
