@@ -8,11 +8,11 @@ const postSchema = new mongoose.Schema({
     },
     text: {
         type: String,
-        //required: [true, 'Insert text']
+        required: true
     },
     address: {
         type: String,
-        //required: [true, 'Insert address']
+        required: true
     },
     _links:{
         self:{
