@@ -24,9 +24,7 @@ app.use(function (req, res, next) {
   if (req.accepts(['application/json', 'application/x-www-form-urlencoded'])) {
       next()
   } else {
-      res.status(406).send({
-          error: "We only accept application/json & application/x-www-form-urlencoded."
-      })
+    res.status(406).json('error')
   }
 })
 
