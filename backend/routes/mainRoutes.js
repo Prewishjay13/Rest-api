@@ -98,8 +98,7 @@ router.post('/', async (req, res) => {
       text: req.body.text,
       address: req.body.address})
 
-
-  post._links.self.href = "http://145.24.222.132:8000/posts" + post._id
+      post._links.self.href = "http://145.24.222.132:8000/posts/" + post._id.toString();
   post._links.collection.href = "http://145.24.222.132:8000/posts"
 
   try {
