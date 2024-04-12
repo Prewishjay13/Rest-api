@@ -2,5 +2,5 @@
 {
     "uri": "stud.hosted.hr.nl/0935796/webservice.json",
     "description": "Voor beoordeling",
-    "test": "{title:nrrj, text:mkmkm, address:mkm, zipcode: 1234}"
+    "test": "{title, text, city, address, zipcode}"
 }

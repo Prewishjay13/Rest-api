@@ -144,7 +144,7 @@ router.post('/', async (req, res) => {
   router.delete('/:id', getPost, async (req, res) => {
     try {
       await res.post.remove()
-      res.status(204).json({ message: 'Deleted post' })
+      res.status(200).json({ message: 'Deleted post' })
     } catch (err) {
       res.status(500).json({ message: err.message })
     }

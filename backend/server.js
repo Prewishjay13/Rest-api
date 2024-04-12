@@ -13,7 +13,7 @@ const app = express();
 
 //these lines should be added to get body data and to be displayed
 // app.use(express.json());
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({extended: false}))
 
 //added
 app.use(express.json())
