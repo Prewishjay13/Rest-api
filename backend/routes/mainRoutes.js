@@ -79,7 +79,7 @@ async function getPost(req, res, next) {
     let post
     try {
       post = await Post.findById(req.params.id)
-      if (!post) {
+      if (post === null) {
         return res.status(404).json({ message: 'Cannot find post' })
       }  
       res.post = post; // Attach the post object to the response
