@@ -83,8 +83,8 @@ async function getPost(req, res, next) {
         return res.status(404).json({ message: 'Cannot find post' })
       } 
       //await res.locals.post.remove();
-      //res.post = post
-      res.locals.post = post;
+      res.post = post
+      //res.locals.post = post;
       next()
     } catch (err) {
       return res.status(500).json({ message: err.message })
@@ -147,8 +147,8 @@ router.post('/', async (req, res) => {
   // Deleting One
   router.delete('/:id', getPost, async (req, res) => {
     try {
-      //await res.post.remove()
-      await res.locals.post.remove();
+      await res.post.remove()
+      //await res.locals.post.remove();
       res.status(204).json({ message: 'Deleted post' })
     } catch (err) {
       res.status(500).json({ message: err.message })
